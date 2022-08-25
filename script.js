@@ -13,7 +13,6 @@ const EXCEL_COLUMNS = [
     { key: 'currency', value: 'Currencies'},
 ]
 
-
 const getCountriesData = async () => {
     try {
         return await axios.get(API_URL)
@@ -22,9 +21,18 @@ const getCountriesData = async () => {
     }
 }
 
+var style = wb.createStyle({
+    font: {
+        color: '#4F4F4F',
+        size: 16,
+        bold: true,
+    },
+    alignment: {horizontal: 'center'},
+});
+
 const writeExcel = async () => {
-    ws.cell(1, 1, 1, 4, true).string('Countries List')
-    EXCEL_COLUMNS.forEach(({ value }, columnIndex) => ws.cell(2, columnIndex +1).string(value))
+    ws.cell(1, 1, 1, 4, true).string('Countries List').style(style)
+    EXCEL_COLUMNS.forEach(({ value }, columnIndex) => ws.cell(2, columnIndex +1).string(value).style({font: {bold: true, color: '#808080', size: 12}}))
 
     const countriesData = await getCountriesData();
     countriesData.data.forEach((element, elementIndex) => {
